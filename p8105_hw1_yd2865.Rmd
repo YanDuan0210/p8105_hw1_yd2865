@@ -6,25 +6,69 @@ output: github_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+Sys.setlocale("LC_TIME", "English_United States")
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+library(moderndive)
+library(tidyverse)
+library(ggplot2)
 ```
 
-## R Markdown
+I'm an R Markdown document! 
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+# Problem 0.1:
+  This is a public GitHub repo with an R Project and includes a single `.Rmd` file that renders to `github_document`. 
+  
+# Problem 0.2:
+  This repo focuses on clear variable names, readable and well-indented code, explanatory text for results. 
+  
+  
+```{r load data}
+# Load early_january_weather dataset
 
-```{r cars}
-summary(cars)
+data("early_january_weather")
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
+  
+# Problem 1:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+Assign the dataset `early_january_weather` to a new object named `weather_df` to facilitate subsequent plotting and analysis.
+
+```{r}
+weather_df <- early_january_weather
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+* This dataset records hourly weather observations, including variables such as temperature (`temp`), time (`time_hour`), and humidity (`humid`). 
+* The dataset has `r nrow(weather_df)` rows and `r ncol(weather_df)` columns. The average temperature is approximately `r round(mean(weather_df$temp, na.rm = TRUE), 2)` °F.
+
+
+```{r}
+# Use ggplot2 to draw a scatter plot.
+
+ggplot(weather_df, aes(x = time_hour, y = temp, color = humid)) + 
+  geom_point(alpha = 0.8) +
+  labs(
+    x = "Time (hourly)",
+    y = "Temperature (°F)",
+    color = "Humidity",
+    title = "Temperature vs Time"
+  )
+```
+
+From the scatter plot, it can be seen that within the time period of the data recording, the temperature gradually increased over time. 
+
+Meanwhile, the change in humidity is shown through the color of the points, when the humidity is high, the color is lighter, and when the humidity is low, the color is darker. 
+
+It indicates that the distribution of temperature and humidity over time has a distinct pattern.
+
+
+
+```{r}
+# Export the scatterplot to my project directory 
+
+ggsave("Temperature vs Time.jpg",
+  width = 7, height = 6, dpi = 300)
+```
+
+
