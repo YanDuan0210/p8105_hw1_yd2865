@@ -72,3 +72,62 @@ ggsave("Temperature vs Time.jpg",
 ```
 
 
+# Problem 2:
+
+
+```{r}
+# Create a data frame named `sample_df` that contains four different types of variables.
+
+set.seed(1234)
+sample_df = tibble(
+  normal_sample = rnorm(10),
+  pos = normal_sample > 0,
+  char_vec = as.character(1:10),
+  fac_vec = factor(
+  rep(c("low","med","high"), length.out = 10))
+)
+```
+
+
+Use `pull` function to take the mean value for each variable:
+
+```{r}
+mean(pull(sample_df, normal_sample))
+```
+
+The type is numeric. The average result of this type is meaningful. The result is the average value of these 10 random numbers.
+
+```{r}
+mean(pull(sample_df, pos))
+```
+
+The type is logical (TRUE = 1, FALSE = 0). The average result of this type is meaningful and the result indicates the proportion of positive numbers.
+
+
+```{r}
+mean(pull(sample_df, char_vec))
+```
+
+The type is character. Character type cannot be directly subjected to arithmetic operations. Executing `mean(char_vec)` will result in an error.
+
+```{r}
+mean(pull(sample_df, fac_vec))
+```
+
+The type is factor. And the result itself has no practical significance because the average cannot be directly calculated for the factor. Executing `mean(fac_vec)` will result in an error. It is necessary to convert it to the numeric type before calculation.
+
+
+```{r}
+#convert variables from one type to another.
+
+sample_df_converted <- transform(
+  sample_df,
+    pos_num  = as.numeric(pos),   
+    char_vec_num  = as.numeric(char_vec),   
+    fac_vec_num   = as.numeric(fac_vec)
+  )
+```
+
+* `pos` is of logical type (TRUE/FALSE). After the conversion: TRUE = 1, FALSE = 0. The result will be a 0/1 numeric vector, indicating whether `normal_sample` is greater than 0. 
+* `char_vec` is of character type ("1", "2", ..., "10"). The function `as.numeric()` attempts to convert the characters into numerical values ranging from 1 to 10.
+* `fac_vec` is of factor type, with levels "low", "med" and "high". `as.numeric()` returns the integer encoding corresponding to the factor levels: "low" = 1, "med" = 2, "high" = 3. So this column will become a numerical vector consisting of the numbers 1, 2, and 3.
