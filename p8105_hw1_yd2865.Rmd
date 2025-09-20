@@ -15,15 +15,8 @@ library(ggplot2)
 
 I'm an R Markdown document! 
 
-
-# Problem 0.1:
-  This is a public GitHub repo with an R Project and includes a single `.Rmd` file that renders to `github_document`. 
   
-# Problem 0.2:
-  This repo focuses on clear variable names, readable and well-indented code, explanatory text for results. 
-  
-  
-```{r load data}
+```{r}
 # Load early_january_weather dataset
 
 data("early_january_weather")
